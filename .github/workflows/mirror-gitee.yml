@@ -36,7 +36,9 @@ jobs:
 
           repo_name="$(basename "$GITHUB_REPOSITORY")"
           source_url="https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-          target_url="https://oauth2:$GITEE_TOKEN@gitee.com/jingjingpeng/$repo_name.git"
+          # Gitee organization mirror namespace; repository slugs are lowercase.
+          target_repo="${repo_name,,}"
+          target_url="https://oauth2:$GITEE_TOKEN@gitee.com/moluxuanji-lab/$target_repo.git"
 
           git clone --mirror "$source_url" source.git
 
@@ -45,7 +47,7 @@ jobs:
             [[ -n "$branch" ]] || continue
             target_branch="$branch"
 
-            # Keep GitHub and Gitee branch names identical.
+            # Mirror each GitHub branch to the same-named Gitee branch.
 
             echo "Syncing branch: $branch -> $target_branch"
             git -C source.git push --force "$target_url" \
