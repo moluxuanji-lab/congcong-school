@@ -45,10 +45,7 @@ jobs:
             [[ -n "$branch" ]] || continue
             target_branch="$branch"
 
-            # Keep the existing Tutorials mapping: GitHub main -> Gitee master.
-            if [[ "$repo_name" == "Tutorials" && "$branch" == "main" ]]; then
-              target_branch="master"
-            fi
+            # Keep GitHub and Gitee branch names identical.
 
             echo "Syncing branch: $branch -> $target_branch"
             git -C source.git push --force "$target_url" \
